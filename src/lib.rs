@@ -5,7 +5,9 @@
 
 extern crate core;
 extern crate num;
+extern crate collections;
 
 pub mod modint;
 pub mod fenwick;
+pub mod sieve;
 

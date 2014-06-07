@@ -1,3 +1,5 @@
+//! Number theory
+
 extern crate core;
 extern crate num;
 
@@ -7,13 +9,15 @@ use num::Integer;
 use core::fmt;
 use core::fmt::Show;
 
+/// A modular integer type
 pub struct ModInt<T> {
     value : T,
     modulus : T
 }
 
 impl<T: Integer> ModInt<T> {
-    fn new(v : T, m : T) -> ModInt<T> {
+    /// Construct a new modular integer with given value and modulus
+    pub fn new(v : T, m : T) -> ModInt<T> {
         let r=v%m;
         if r >= Zero::zero() {
             ModInt {value : r, modulus : m}
@@ -21,7 +25,11 @@ impl<T: Integer> ModInt<T> {
             ModInt {value : r + m, modulus : m}
         }
     }
-    fn new_nocheck(v : T, m : T) -> ModInt<T> {
+
+    /// Construct a new modular integer with given value and modulus
+    ///
+    /// Doesn't normalize v to the range [0,m).
+    pub fn new_nocheck(v : T, m : T) -> ModInt<T> {
         ModInt {value : v, modulus : m}
     }
 }
@@ -60,7 +68,8 @@ impl<T: Clone + Integer + Show> Div<ModInt<T>,ModInt<T>> for ModInt<T> {
     }
 }
 
-fn bezout<T: Integer + Clone>(a : T, b : T) -> (T, T, T) {
+/// For given integers `a` and `b` returns three integers `(x, y, g)` that satisfy ax + by = g and g=gcd(a,b).
+pub fn bezout<T: Integer + Clone>(a : T, b : T) -> (T, T, T) {
     if a == Zero::zero() {
         return (Zero::zero(), One::one(), b);
     }
@@ -71,8 +80,9 @@ fn bezout<T: Integer + Clone>(a : T, b : T) -> (T, T, T) {
     return (y - (b/a)*x, x, g);
 }
 
-fn mod_inverse<T: Integer + Clone>(a : T, b : T) -> Option<T> {
-    let (x,_,g) = bezout(a, b);
+/// For integers `a` and `m` computes an integer `x` such that ax = 1 (mod m), if such an integer exists.
+pub fn mod_inverse<T: Integer + Clone>(a : T, m : T) -> Option<T> {
+    let (x,_,g) = bezout(a, m);
     if g == One::one() {
         Some(x)
     } else {

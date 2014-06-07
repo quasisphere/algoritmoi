@@ -1,6 +1,6 @@
 //! Doc
 
-#![crate_id = "euler#0.1"]
+#![crate_id = "algoritmoi#0.1"]
 #![deny(missing_doc)]
 
 extern crate core;

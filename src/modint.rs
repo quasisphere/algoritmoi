@@ -58,13 +58,45 @@ impl<T: Clone + Integer> Mul<ModInt<T>,ModInt<T>> for ModInt<T> {
     }
 }
 
+impl<T: Clone + Integer> ModInt<T> {
+    /// Calculates `self` to the power `exp`.
+    pub fn pow(&self, mut exp : uint) -> ModInt<T> {
+        let mut base = ModInt::new(self.value.clone(), self.modulus.clone());
+        if exp == 1 {
+            base
+        } else {
+            let mut acc = ModInt::new(One::one(), self.modulus.clone());
+            while exp > 0 {
+                if (exp & 1) == 1 {
+                    acc = acc * base;
+                }
+                base = base*base;
+                exp = exp >> 1;
+            }
+            acc
+        }
+    }
+}
+
+impl<T: Clone> Clone for ModInt<T> {
+    fn clone(&self) -> ModInt<T> {
+        ModInt{value: self.value.clone(), modulus: self.modulus.clone()}
+    }
+}
+
 impl<T: Clone + Integer + Show> Div<ModInt<T>,ModInt<T>> for ModInt<T> {
     fn div(&self, other : &ModInt<T>) -> ModInt<T> {
         let inv = mod_inverse(other.value.clone(), self.modulus.clone());
         match inv {
-            Some(i) => ModInt::new_nocheck(self.value * i % self.modulus, self.modulus.clone()),
+            Some(i) => ModInt::new(self.value * i % self.modulus, self.modulus.clone()),
             None    => fail!("{} is not a unit (mod {})", other.value, self.modulus)
         }
+    }
+}
+
+impl<T: PartialEq> PartialEq for ModInt<T> {
+    fn eq(&self, other: &ModInt<T>) -> bool {
+        self.value == other.value && self.modulus == other.modulus
     }
 }
 
@@ -77,14 +109,16 @@ pub fn bezout<T: Integer + Clone>(a : T, b : T) -> (T, T, T) {
         return bezout(b, a);
     }
     let (x, y, g) = bezout(b%a, a.clone());
+    //x*(b - [b/a]a) + y*a == g
+    //(y - (b/a)*x)*a + x*b == g
     return (y - (b/a)*x, x, g);
 }
 
 /// For integers `a` and `m` computes an integer `x` such that ax = 1 (mod m), if such an integer exists.
 pub fn mod_inverse<T: Integer + Clone>(a : T, m : T) -> Option<T> {
-    let (x,_,g) = bezout(a, m);
+    let (x,_,g) = bezout(a, m.clone());
     if g == One::one() {
-        Some(x)
+        Some(x%m)
     } else {
         None
     }

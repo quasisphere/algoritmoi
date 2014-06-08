@@ -47,6 +47,11 @@ impl Div<$Name,$Name> for $Name {
         }
     }
 }
+impl Neg<$Name> for $Name {
+    fn neg(&self) -> $Name {
+        $Name { value: $m - self.value }
+    }
+}
 impl core::num::One for $Name {
     fn one() -> $Name {
         $Name { value: core::num::One::one() }

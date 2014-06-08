@@ -40,7 +40,7 @@ impl Mul<$Name,$Name> for $Name {
 }
 impl Div<$Name,$Name> for $Name {
     fn div(&self, other: &$Name) -> $Name {
-        let inv=algoritmoi::modint::invert_mod(other.value, $m);
+        let inv=algoritmoi::moduli::invert_mod(other.value, $m);
         match inv {
             Some(i) => $Name::new(self.value*i),
             _ => fail!("Trying to divide by {} modulo {}", other.value, $m)

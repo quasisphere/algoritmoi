@@ -10,4 +10,5 @@ extern crate collections;
 pub mod modint;
 pub mod fenwick;
 pub mod sieve;
+pub mod combinatorics;
 

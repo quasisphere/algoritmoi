@@ -1,22 +1,17 @@
 TODO
 ====
 
+* in general we need tests
+
 Number Theory
 -------------
 
 * Pythagorean triplets
 * Gaussian integers
 * Möbius inversion
-* Factoring large integers
+* factoring large integers
 * Miller-Rabin
 * general algebraic number theory (big)
-
-Linear Algebra
---------------
-
-* matrices
-* Gaussian elimination
-* fast matrix multiplication
 
 Graphs
 ------

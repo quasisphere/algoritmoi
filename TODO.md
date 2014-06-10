@@ -8,7 +8,6 @@ Number Theory
 
 * Pythagorean triplets
 * Gaussian integers
-* Möbius inversion
 * factoring large integers
 * Miller-Rabin
 * general algebraic number theory (big)

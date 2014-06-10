@@ -14,4 +14,5 @@ pub mod sieve;
 pub mod combinatorics;
 pub mod macros;
 pub mod linear;
+pub mod moebius;
 
